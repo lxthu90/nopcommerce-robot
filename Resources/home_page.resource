@@ -4,8 +4,9 @@ Library    Collections
 Library    String
 Resource    ..//Config/env.resource
 Resource    ..//TestData/home_page_data.resource
-Resource    ../Utilities/common_function.resource
+Resource    ../Utilities/utills.resource
 Resource    ../Resources/header_navigation.resource
+Resource    ../Utilities/web_locator.resource
 
 
 *** Variables ***
@@ -25,9 +26,9 @@ ${DIGITAL_IMAGE_LOCATOR}    xpath://img[@alt='Picture for category Digital downl
 
 ${FEATURE_PRODUCTS_LOCATOR}    xpath://div[@class='product-grid home-page-product-grid']//div[@class='item-box']
 ${PRODUCT_NAME_LINKS_LOCATOR}    //h2[@class='product-title']//a
-${ADD_TO_CART_BUTTONS_LOCATOR}           //input[@class='button-2 product-box-add-to-cart-button']    #changed
-${ADD_TO_COMPARE_LIST_BUTTONS_LOCATOR}   //input[@class='button-2 add-to-compare-list-button']    #changed
-${ADD_TO_WISHLIST_BUTTONS_LOCATOR}       //input[@class='button-2 add-to-wishlist-button']    #changed
+${ADD_TO_CART_BUTTONS_LOCATOR}           //input[@value='Add to cart']    #changed
+${ADD_TO_COMPARE_LIST_BUTTONS_LOCATOR}   //input[@value='Add to compare list']    #changed
+${ADD_TO_WISHLIST_BUTTONS_LOCATOR}       //input[@value='Add to wishlist']    #changed
 
 ${NEWS_ITEMS_LOCATOR}    xpath://div[@class='news-items']//div[@class='news-item']
 ${NEWS_TITLE_LINK_LOCATORS}    //div[@class='news-head']
@@ -49,21 +50,43 @@ ${ALL_LINKS_IN_HOMEPAGE_LOCATOR}    //a
 ${ALL_TEXTS_IN_HOMEPAGE_LOCATOR}    xpath://a
 
 *** Keywords ***
-Go To Home Page
+Open Home Page
     Open Browser    ${URL}    ${BROWSER}
     Maximize Browser Window
 
+    #handle localtor for both local and online page
+    # IF    '${URL}' == 'https://demo.nopcommerce.com/'
+    #     Log To Console    running on online page
+    #     ${ADD_TO_CART_BUTTONS_LOCATOR}=    Set Variable           //button[@class='button-2 product-box-add-to-cart-button']    #changed
+    #     ${ADD_TO_COMPARE_LIST_BUTTONS_LOCATOR}=    Set Variable   //button[@class='button-2 add-to-compare-list-button']    #changed
+    #     ${ADD_TO_WISHLIST_BUTTONS_LOCATOR}=    Set Variable       //button[@class='button-2 add-to-wishlist-button']    #changed
+        
+    #     #header page
+    #     ${LOGO_LINK_LOCATOR}=    Set Variable    xpath://img[@alt='nopCommerce demo store']    #changed
+    #     ${SEARCH_BUTTON_LOCATOR}=     Set Variable    xpath://button[@class='button-1 search-box-button']    #changed
+
+    #     #review page
+    #     ${SUBMIT_BUTTON_LOCATOR}=    Set Variable    xpath://div[@class='buttons']/button[@name='add-review']    #changed
+        
+    #     #title
+    #     ${WISHLIST_PAGE_TITLE}=    Set Variable    nopCommerce demo store. Wishlist    
+    #     ${SHOPPING_CART_PAGE_TITLE}=    Set Variable    nopCommerce demo store. Shopping Cart 
+    #     ${REGISTER_PAGE_TITLE}=    Set Variable     nopCommerce demo store. Register
+    #     ${MY_ACCOUNT_PAGE_TITLE}=    Set Variable    nopCommerce demo store. Account 
+
+
+    #  END
 Go To Home Page Without Logging In
     ${logged_in}=    Run Keyword And Return Status    Element Should Be Visible    ${LOGOUT_LINK_LOCATOR}
-    Run Keyword If    ${logged_in}    Click Link    header_navigation.${LOGOUT_LINK_LOCATOR}
+    Run Keyword If    ${logged_in}    web_locator.Click On Element     header_navigation.${LOGOUT_LINK_LOCATOR}
     
 Verify Hasing New Products Slider
     Element Should Be Visible    ${SLIDER_LOCATOR}
 
 Verify Welcome Content
-    ${welcome_texts}=    Get Texts From List    ${WELCOME_CONTENT_LOCATOR}
+    ${welcome_texts}=    web_locator.Get Texts From List Of Locator    ${WELCOME_CONTENT_LOCATOR}
     Log    Welcome texts 1 is: ${welcome_texts}
-    ${welcome_texts}=    Remove Character From List    ${welcome_texts}    \n
+    ${welcome_texts}=    utills.Remove Character From List    ${welcome_texts}    \n
     Log    Welcome texts 2 is: ${welcome_texts}
     Should Be Equal    ${welcome_texts}    ${WELCOME_TEXT_DATA}
 
@@ -81,8 +104,8 @@ Has category block contains: "Electronics", "Apparel", "Digital downloads" optio
     Element Should Be Visible    ${DIGITAL_IMAGE_LOCATOR}
 
 Verify Each Product In The Featured Products Grid
-    ${count}=   get element count    ${FEATURE_PRODUCTS_LOCATOR}
-    Should Be Equal As Integers    ${count}    4
+    ${count}=   Get Element Count    ${FEATURE_PRODUCTS_LOCATOR}
+    Should Be Equal As Integers    ${count}    ${FEATURED_PRODUCT_NUMBER}
     FOR    ${index}    IN RANGE    1    ${count}+1
         Element Should Be Visible    (${PRODUCT_NAME_LINKS_LOCATOR})[${index}]
         Element Should Be Enabled    (${ADD_TO_CART_BUTTONS_LOCATOR})[${index}]
@@ -92,7 +115,7 @@ Verify Each Product In The Featured Products Grid
 
 Verify Each News Block Contains 3 The Lastesr News Cards
     ${count}=   Get Element Count    ${NEWS_ITEMS_LOCATOR}
-    Should Be Equal As Integers    ${count}    3
+    Should Be Equal As Integers    ${count}    ${NEWS_ITEMS_NUMBER}
     FOR    ${index}    IN RANGE    1    ${count}+1
         Element Should Be Visible    (${NEWS_TITLE_LINK_LOCATORS})[${index}]
         Element Should Be Enabled    (${DETAILS_BUTTONS_LOCATOR})[${index}]
@@ -100,14 +123,11 @@ Verify Each News Block Contains 3 The Lastesr News Cards
     END
     Element Should Be Enabled    ${VIEW_NEWS_ARCHIVE_BUTTONS_LOCATOR}
 
-Verify Community Poll Block Should Contain 4 Radio Buttons
-    ${count}=   Get Element Count    ${POLL_OPTIONS_LOCATOR}
-    Should Be Equal As Integers    ${count}    4
-
-    ${excelent_radio_text}    Get Text    ${EXCELLENT_RADIO_TEXT_LOCATOR}
-    ${good_radio_button}    Get Text    ${GOOD_RADIO_TEXT_LOCATOR}    
-    ${poor_radio_text}    Get Text    ${POOR_RADIO_TEXT_LOCATOR}   
-    ${very_bad_text}    Get Text    ${VERY_BAD_RADIO_TEXT_LOCATOR}
+Verify Community Poll Block Options
+    ${excelent_radio_text}    web_locator.Get Text From    ${EXCELLENT_RADIO_TEXT_LOCATOR}
+    ${good_radio_button}    web_locator.Get Text From    ${GOOD_RADIO_TEXT_LOCATOR}    
+    ${poor_radio_text}    web_locator.Get Text From    ${POOR_RADIO_TEXT_LOCATOR}   
+    ${very_bad_text}    web_locator.Get Text From    ${VERY_BAD_RADIO_TEXT_LOCATOR}
 
     Should Be Equal As Strings    ${excelent_radio_text}    ${EXCELLENT_RADIO_TEXT_DATA}
     Should Be Equal As Strings    ${good_radio_button}    ${GOOD_RADIO_TEXT_DATA}

@@ -2,11 +2,17 @@
 Library    SeleniumLibrary
 Library    Collections
 Library    String
+Library    OperatingSystem
 
 Resource    ..//Config/env.resource
 Resource    ..//TestData/home_page_data.resource
 Resource    ..//TestData/header_navigation_data.resource
-Resource    ../Utilities/common_function.resource
+Resource    ../Utilities/utills.resource
+Resource    ../Utilities/web_locator.resource
+Resource    ../Utilities/base_page.resource
+Resource    ../Utilities/data_helper.resource
+
+
 
 *** Variables ***
 ${CURRENCY_DROPDOWN_LOCATOR}    id:customerCurrency
@@ -20,7 +26,7 @@ ${SHOPPING_CART_LINK_LOCATOR}    xpath://a[@class='ico-cart']
 ${MY_ACCOUNT_LINK_LOCATOR}    xpath://a[@class='ico-account']
 ${SHOPPING_CART_NUMBER_LOCATOR}    xpath://span[@class='cart-qty']
 ${SEARCH_BOX_LOCATOR}    id:small-searchterms
-${SEARCH_BUTTON_LOCATOR}    xpath://input[@class='button-1 search-box-button']    #changed
+${SEARCH_BUTTON_LOCATOR}    xpath://input[@value='Search']    #changed
 
 ${CATEGORIES_MENU_LOCATOR}    xpath://ul[@class='top-menu notmobile']/li/a
 ${COMPUTER_MENU_LINK_LOCATOR}    xpath://a[text()='Computers ']
@@ -31,24 +37,17 @@ ${BOOKS_MENU_LINK_LOCATOR}    xpath://a[text()='Books ']
 ${JEWELRY_MENU_LINK_LOCATOR}    xpath://a[text()='Jewelry ']
 ${GIFT_CARDS_MENU_LINK_LOCATOR}    xpath://a[text()='Gift Cards ']
 
-${DESKTOPS_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Desktops ']
-${NOTEBOOKS_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Notebooks ']
-${SOFTWARES_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Software ']
-
-${CAMERA_PHOTO_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Camera & photo ']
-${CELLPHONES_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Cell phones ']
-${OTHERS_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Others ']
-
-${SHOES_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Shoes ']
-${CLOTHING_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Clothing ']
-${ACCESSORIES_SUBMENU_LINK_LOCATOR}    xpath://ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a[text()='Accessories ']
-
 
 *** Keywords ***
+Log Out Button Should Be Visible
+    Element Should Be Visible    ${LOGOUT_LINK_LOCATOR}
+
 User Log Out
-    Click Link    ${LOGOUT_LINK_LOCATOR}
+    web_locator.Click On Link    ${LOGOUT_LINK_LOCATOR}
+    
 Go To Register Page By Clicking On Register Link
-    Click Link    ${REGISTER_LINK_LOCATOR}
+    web_locator.Click On Link    ${REGISTER_LINK_LOCATOR}
+
 Verify HomePage Link Header When Not Logging In
     Element Should Be Visible    ${REGISTER_LINK_LOCATOR}
     Element Should Be Visible    ${LOGIN_LINK_LOCATOR}
@@ -61,7 +60,6 @@ Verify HomePage Link Header When Logged In
 Verify List Value Of Currency Dropdown
     ${dropdown_values}    Get List Items    ${CURRENCY_DROPDOWN_LOCATOR}
     ${expected_list}    Create List    @{CURRENCY_DROPDOWN_DATA}
-
     Lists Should Be Equal    ${dropdown_values}    ${expected_list}
 
 Verify Currency Dropdown Value Should Be
@@ -70,13 +68,13 @@ Verify Currency Dropdown Value Should Be
 
 Verify Number Of Wistlist
     [Arguments]    ${number_of_wistlist}
-    ${value}=    Get Text    ${WISHLIST_NUMBER_LOCATOR}
+    ${value}=    web_locator.Get Text From    ${WISHLIST_NUMBER_LOCATOR}
     Log    Number of wistlist is ${value}
     Should Be Equal    (${number_of_wistlist})    ${value}
 
 Verify Number Of Shopping Cart
     [Arguments]    ${number_of_shopping_cart}
-    ${value}=    Get Text    ${SHOPPING_CART_NUMBER_LOCATOR}
+    ${value}=    web_locator.Get Text From    ${SHOPPING_CART_NUMBER_LOCATOR}
     Log    Number of shopping cart is ${value}
     Should Be Equal    (${number_of_shopping_cart})    ${value}
 
@@ -92,74 +90,50 @@ Verify Placeholder Value Of Search box
 Verify Search Button Should Be Enabled
     Element Should Be Enabled    ${SEARCH_BUTTON_LOCATOR}
 
-Verify Sub menu
-    @{menu_categories}  Get WebElements  ${CATEGORIES_MENU_LOCATOR}
-    FOR  ${category}  IN  @{menu_categories}
-        ${category_name}  Set Variable  ${category.text}
-        Log To Console    ${category_name}
-        Mouse Over    ${category}
-        IF    '${category_name}'=='Computers'
-            Wait Until Element Is Visible   ${DESKTOPS_SUBMENU_LINK_LOCATOR}
-            Wait Until Element Is Visible   ${NOTEBOOKS_SUBMENU_LINK_LOCATOR}
-            Wait Until Element Is Visible   ${SOFTWARES_SUBMENU_LINK_LOCATOR}
-        END
-        IF    '${category_name}'=='Electronics'
-            Wait Until Element Is Visible    ${CAMERA_PHOTO_SUBMENU_LINK_LOCATOR}
-            Wait Until Element Is Visible    ${CELLPHONES_SUBMENU_LINK_LOCATOR}
-            Wait Until Element Is Visible    ${OTHERS_SUBMENU_LINK_LOCATOR}
-        END
-        IF    '${category_name}'=='Apparel'
-            Wait Until Element Is Visible   ${SHOES_SUBMENU_LINK_LOCATOR}
-            Wait Until Element Is Visible   ${CLOTHING_SUBMENU_LINK_LOCATOR}
-            Wait Until Element Is Visible   ${ACCESSORIES_SUBMENU_LINK_LOCATOR}
-        END
-    END
+Verify Categories Menu Contains Corresponding Sub Category
+    ${CATEGORIES_NAME}    Create List    @{MENU_CATEGORIES_DATA}
+    ${SUB_CATEGORIES_NAME}    Create List    @{MENU_SUB_CATEGORIES_DATA}
+    @{ACTUAL_SUB_CATEGORIES}    Create List
 
-Change Value Of Currency Dropdown
-    ${selected_value}=    Get Selected List Label    ${CURRENCY_DROPDOWN_LOCATOR}
-    IF    '${selected_value}'=='US Dollar'
-        Select From List By Label    ${CURRENCY_DROPDOWN_LOCATOR}    Euro
+    @{menu_categories}  Get WebElements  ${CATEGORIES_MENU_LOCATOR}
+    ${count}=    Get Length   ${menu_categories}
+    FOR    ${index}    IN RANGE    0    ${count}
+        #Mouse Over    ${menu_categories}[${index}]
+        ${category_name}=    Set Variable    ${CATEGORIES_NAME}[${index}]
+        Log To Console    ${category_name}        
+        @{SUB_CATEGORIES_ELEMENTS}    Get WebElements    //ul[@class='top-menu notmobile']//a[text()='${category_name} ']/following-sibling::ul/li/a
+        FOR    ${sub_categories_element}    IN    @{SUB_CATEGORIES_ELEMENTS}
+            Mouse Over    ${menu_categories}[${index}]
+            Wait Until Element Is Visible    ${sub_categories_element}
+            ${sub_name}=    web_locator.Get Text From    ${sub_categories_element}
+            Append To List    ${ACTUAL_SUB_CATEGORIES}    ${sub_name}
+        END
     END
-    IF    '${selected_value}'=='Euro'
-        Select From List By Label    ${CURRENCY_DROPDOWN_LOCATOR}    US Dollar
-    END
-    [Return]    ${selected_value}
+    Log Many    @{ACTUAL_SUB_CATEGORIES}
+    Log Many    @{CATEGORIES_NAME}
+    Lists Should Be Equal  ${ACTUAL_SUB_CATEGORIES}  ${SUB_CATEGORIES_NAME}  ignore_order=True
+
     
-Exchange Currency
-    [Arguments]    ${amount}    ${convert_from}
-    IF  '${convert_from}'=='US Dollar'
-        ${currency_rate}=    Convert To Number    ${CURRENCY_RATE_DATA}
-        ${exchanged_value}  Evaluate    ${amount}*${currency_rate}
-        ${exchanged_value}  Evaluate    round(${exchanged_value},2)
-    ELSE IF     '${convert_from}'=='Euro'
-        ${currency_rate}=    Convert To Number    ${CURRENCY_RATE_DATA}
-        ${exchanged_value}  Evaluate    ${amount}/${currency_rate}
-        ${exchanged_value}  Evaluate    round(${exchanged_value},2)
-    ELSE
-        Log     The type to convert must be US Dollar OR Euro but receive ${convert_from}
-    END
-    [RETURN]    ${exchanged_value}
+
 
 The Price Should Be Converted Corresponding To The Chosen Option
-    #Get current currency symbol
-    ${currency_symbol}=    Get Selected List Label    ${CURRENCY_DROPDOWN_LOCATOR}
-
-    #Get all actual value in page before changing currency symbol
-    @{price_list_before}=    common_function.Get All Actual Prices Values
-    Log Many    Before @{price_list_before}
-
-    #Exchange value from current currency
-    @{price_list_exchanged}    Create List
-    FOR    ${price}    IN    @{price_list_before}
-        ${price_exchange}=    Exchange Currency    ${price}    ${currency_symbol}
-        Append To List    ${price_list_exchanged}     ${price_exchange}
-    END
-    Log Many    Exchange @{price_list_exchanged}        
-    #Change currency symbol
-    Change Value Of Currency Dropdown
-    #Get all actual value in page again
-    @{price_list_after}=    common_function.Get All Actual Prices Values
-    Log Many    After @{price_list_after}
-    Lists Should Be Equal   ${price_list_exchanged}    ${price_list_after}
+    #Get actual prices list in us dollar
+    ${PRICES_LIST_DEFAULT}    Create List    @{ACTUAL_PRICE_VALUE_GLOBAL}
     
+    #Get current currency symbol
+    base_page.Get Current Currency Symbol
+    ${current_currency_symbol}=    Set Variable    ${CURRENCY_SYMBOL_GLOBAL}
+    #get prices value on page after seleting currency
+    base_page.Get All Actual Prices Values In Current Page
+    ${PRICES_LIST_AFTER}    Create List    @{ACTUAL_PRICE_VALUE_GLOBAL}
+    Log Many    ${PRICES_LIST_AFTER}
 
+    #exchange prices in us dollar to current currency symbol
+    @{EXCHANGED_PRICES}    Create List
+    FOR    ${price}    IN    @{PRICES_LIST_DEFAULT}
+        ${exchanged_price}=    data_helper.Exchange Currency    ${price}    ${current_currency_symbol}
+        Append To List    ${EXCHANGED_PRICES}    ${exchanged_price}
+    END
+    
+    #verify
+    Lists Should Be Equal    ${EXCHANGED_PRICES}    ${PRICES_LIST_AFTER}

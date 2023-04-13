@@ -7,6 +7,8 @@ Library    OperatingSystem
 Resource    ..//Resources/header_navigation.resource
 Resource    ..//Resources/home_page.resource
 Resource    ..//Resources/product_details_page.resource
+Resource    ../Utilities/web_locator.resource
+
 
 *** Variables ***
 ${CATEGORIES_LINK_LOCATOR}    xpath://*[contains(@class, 'block block-category-navigation')]/div/ul/li/a
@@ -24,7 +26,7 @@ ${PRODUCT_NAME_GLOBAL}
 
 *** Keywords ***  
 Search And Go To Unreview Product - Draft
-    Click Link    ${COMPUTER_MENU_LINK_LOCATOR}
+    web_locator.Click On Link    ${COMPUTER_MENU_LINK_LOCATOR}
     Wait Until Element Is Visible    ${COMPUTERS_CATEGORY_LINK_LOCATOR}
     @{categories}  Get WebElements  ${CATEGORIES_LINK_LOCATOR}
     @{link_list}    Create List
@@ -36,7 +38,6 @@ Search And Go To Unreview Product - Draft
     END
     Log Many   @{link_list}
 
-    
     @{sub_category_url}    Create List
     FOR    ${category_url}    IN    @{link_list}
         Go To    ${category_url}
@@ -50,20 +51,9 @@ Search And Go To Unreview Product - Draft
     
     
 
-Open A Product Page And Get Product Name
-    Wait Until Element Is Visible    ${DIGITAL_DOWNLOADS_MENU_LINK_LOCATOR}
-    Click Link    ${DIGITAL_DOWNLOADS_MENU_LINK_LOCATOR}
-    Wait Until Element Is Visible    ${PRODUCT_LINK_LOCATOR}
-    Click Link    ${PRODUCT_LINK_LOCATOR}
+Open A Product Page
+    [Arguments]    ${category_manu_locator}    ${product_locator}
+    web_locator.Click On Link     ${category_manu_locator}
+    web_locator.Click On Link    ${product_locator}
     ${PRODUCT_NAME_GLOBAL}=    Get Text    ${PRODUCT_NAME_LOCATOR}
     Set Global Variable    ${PRODUCT_NAME_GLOBAL}
-
-
-Open Unreview Product Page And Get Product Name
-    Wait Until Element Is Visible    ${COMPUTER_MENU_LINK_LOCATOR}
-    Click Link    ${COMPUTER_MENU_LINK_LOCATOR}
-    Click Link    ${SOFTWARES_SUBCATEGORY_LINK_LOCATOR}
-    Click Link    ${PRODUCT_LINK_LOCATOR}
-    ${PRODUCT_NAME_GLOBAL}=    Get Text    ${PRODUCT_NAME_LOCATOR}
-    Set Global Variable    ${PRODUCT_NAME_GLOBAL}
-    Log     ${PRODUCT_NAME_GLOBAL}
