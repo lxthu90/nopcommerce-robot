@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.0.2 (Python 3.11.2 on win32)" generated="20230328 18:05:04.320" rpa="false" schemaversion="3">
+<robot generator="Robot 6.0.2 (Python 3.11.2 on win32)" generated="20230412 16:09:23.056" rpa="false" schemaversion="3">
 <suite id="s1" name="Robot Interactive Console" source="c:\Users\thulex\.vscode\extensions\robocorp.robotframework-lsp-1.9.0\src\robotframework_ls\vendored\robotframework_interactive\robot_interactive_console.robot">
 <test id="s1-t1" name="Default Task/Test" line="5">
 <kw name="Interpreter Main Loop" library="MainLoop">
-<kw name="home_page.Go To Home Page Without Logging In">
-<msg timestamp="20230328 18:05:04.757" level="FAIL">No keyword with name 'home_page.Go To Home Page Without Logging In' found.</msg>
-<status status="FAIL" starttime="20230328 18:05:04.757" endtime="20230328 18:05:04.757"/>
+<kw name="utills.Prepare Reviewed Product">
+<msg timestamp="20230412 16:09:24.011" level="FAIL">No keyword with name 'utills.Prepare Reviewed Product' found.</msg>
+<status status="FAIL" starttime="20230412 16:09:24.010" endtime="20230412 16:09:24.011"/>
 </kw>
-<kw name="categories_page.Open A Product Page And Get Product Name">
-<status status="NOT RUN" starttime="20230328 18:05:04.758" endtime="20230328 18:05:04.758"/>
+<kw name="login_page.Login To System Then Going To Home Page">
+<status status="NOT RUN" starttime="20230412 16:09:24.012" endtime="20230412 16:09:24.012"/>
 </kw>
-<kw name="review_page.Go To Review Page">
-<status status="NOT RUN" starttime="20230328 18:05:04.759" endtime="20230328 18:05:04.759"/>
+<kw name="categories_page.Open A Product Page">
+<arg>${DIGITAL_DOWNLOADS_MENU_LINK_LOCATOR}</arg>
+<arg>${PRODUCT_LINK_LOCATOR}</arg>
+<status status="NOT RUN" starttime="20230412 16:09:24.015" endtime="20230412 16:09:24.015"/>
 </kw>
-<kw name="review_page.Verify The Form For Writing The Review">
-<status status="NOT RUN" starttime="20230328 18:05:04.761" endtime="20230328 18:05:04.761"/>
+<kw name="product_details_page.Click On Add Your Review Link">
+<status status="NOT RUN" starttime="20230412 16:09:24.017" endtime="20230412 16:09:24.017"/>
 </kw>
-<kw name="review_page.Verify That User Is Unable To Review When Not Logged In">
-<status status="NOT RUN" starttime="20230328 18:05:04.762" endtime="20230328 18:05:04.762"/>
+<kw name="review_page.Enter Valid Review And Verify Information">
+<arg>this is title</arg>
+<arg>hello</arg>
+<arg>1</arg>
+<status status="NOT RUN" starttime="20230412 16:09:24.019" endtime="20230412 16:09:24.019"/>
 </kw>
-<status status="PASS" starttime="20230328 18:05:04.339" endtime="20230328 18:05:05.789"/>
+<kw name="review_page.User Votes Review As Yes">
+<status status="NOT RUN" starttime="20230412 16:09:24.021" endtime="20230412 16:09:24.021"/>
 </kw>
-<status status="PASS" starttime="20230328 18:05:04.339" endtime="20230328 18:05:05.790"/>
+<kw name="review_page.User Votes Review As No">
+<status status="NOT RUN" starttime="20230412 16:09:24.026" endtime="20230412 16:09:24.026"/>
+</kw>
+<kw name="Page Should Contain">
+<arg>You cannot vote for your own review</arg>
+<status status="NOT RUN" starttime="20230412 16:09:24.028" endtime="20230412 16:09:24.028"/>
+</kw>
+<status status="PASS" starttime="20230412 16:09:23.094" endtime="20230412 16:09:25.332"/>
+</kw>
+<status status="PASS" starttime="20230412 16:09:23.093" endtime="20230412 16:09:25.333"/>
 </test>
-<status status="PASS" starttime="20230328 18:05:04.321" endtime="20230328 18:05:05.791"/>
+<status status="PASS" starttime="20230412 16:09:23.058" endtime="20230412 16:09:25.334"/>
 </suite>
 <statistics>
 <total>
