@@ -1,7 +1,0 @@
-${title};${gender};${firstname};${lastname};${dob_day};${dob_month};${dob_year};${email};${company};${password};${confirmPassword};
-A;M;First excel;Last Excel;1;1;1990;abc@gmail.com;Nash;123456;123456;
-B;F;First excel 2;Last Excel 2;2;2;1990;abc2@gmail.com;Nash;123456;123456;
-V;F;First excel 3;Last Excel 3;3;3;1990;abc3@gmail.com;Nash;123456;123456;
-D;M;First excel;Last Excel;1;1;1990;abc4@gmail.com;Nash;123456;123456;
-F;F;First excel 2;Last Excel 2;2;2;1990;abc5@gmail.com;Nash;123456;123456;
-R;F;First excel 3;Last Excel 3;3;3;1990;abc6@gmail.com;Nash;123456;123456;
