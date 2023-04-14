@@ -66,23 +66,6 @@ Verify That The Owner Is Not Able To Vote Their Review
     review_page.User Votes Review As No
     review_page.Verify That User Is Unable Vote Their Review
 
-
-Verify That The User Not Owner Is Able To Vote Their Review
-    utills.Prepare Reviewed Product
-    login_page.Login To System Then Going To Home Page
-    categories_page.Open A Product Page    ${DIGITAL_DOWNLOADS_MENU_LINK_LOCATOR}    ${PRODUCT_LINK_LOCATOR}
-    product_details_page.Click On Add Your Review Link   
-    review_page.Enter Valid Review  this is title    hello    1
-    review_page.Submit Review
-    header_navigation.User Log Out
-    login_page.Login To System Then Going To Home Page
-    categories_page.Open A Product Page    ${DIGITAL_DOWNLOADS_MENU_LINK_LOCATOR}    ${PRODUCT_LINK_LOCATOR}
-    product_details_page.Click On Add Your Review Link
-    review_page.User Votes Review As Yes
-    review_page.Verify That User Is Able Vote Others Review
-    review_page.User Votes Review As No
-    review_page.Verify That User Is Able Vote Others Review
-
 Verify That The User Not Owner Is Able To Vote Their Review
     utills.Prepare Reviewed Product
     login_page.Login To System Then Going To Home Page
@@ -97,5 +80,5 @@ View the Rating on Product details page
     utills.Prepare Reviewed Product
     categories_page.Open A Product Page    ${DIGITAL_DOWNLOADS_MENU_LINK_LOCATOR}    ${PRODUCT_LINK_LOCATOR}
     review_page.Rating Section Should Appear Under Product Short Description
-
+    
 *** Keywords ***
