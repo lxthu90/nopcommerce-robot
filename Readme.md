@@ -9,6 +9,8 @@ To install python, go to python official site − https://www.python.org/downloa
         pip install robotframework-datadriver
         pip install robotframework-excellib
         pip install robotframework-seleniumlibrary
+        pip install webdrivermanager
+
 2.2 Install VSCode Extension
 Open VSCode/Extension
 Search and install these extensions:

@@ -4,7 +4,7 @@ Library    Collections
 Library    String
 Library    OperatingSystem
 
-Resource    ..//Config/env.resource
+Resource    ..//configs/env.resource
 Resource    ..//TestData/home_page_data.resource
 Resource    ..//TestData/header_navigation_data.resource
 Resource    ../Utilities/utills.resource

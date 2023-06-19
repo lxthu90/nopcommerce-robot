@@ -2,7 +2,7 @@
 Library    SeleniumLibrary
 Library    Collections
 Library    String
-Resource    ..//Config/env.resource
+Resource    ..//configs/env.resource
 Resource    ..//TestData/home_page_data.resource
 Resource    ../Utilities/utills.resource
 Resource    ../Resources/header_navigation.resource
@@ -50,10 +50,11 @@ ${ALL_LINKS_IN_HOMEPAGE_LOCATOR}    //a
 ${ALL_TEXTS_IN_HOMEPAGE_LOCATOR}    xpath://a
 
 *** Keywords ***
-Open Home Page
-    Open Browser    ${URL}    ${BROWSER}
-    Maximize Browser Window
 
+    
+
+Go To Home Page
+    Go To    ${URL}
     #handle localtor for both local and online page
     # IF    '${URL}' == 'https://demo.nopcommerce.com/'
     #     Log To Console    running on online page
@@ -73,12 +74,12 @@ Open Home Page
     #     ${SHOPPING_CART_PAGE_TITLE}=    Set Variable    nopCommerce demo store. Shopping Cart 
     #     ${REGISTER_PAGE_TITLE}=    Set Variable     nopCommerce demo store. Register
     #     ${MY_ACCOUNT_PAGE_TITLE}=    Set Variable    nopCommerce demo store. Account 
-
-
     #  END
-Go To Home Page Without Logging In
-    ${logged_in}=    Run Keyword And Return Status    Element Should Be Visible    ${LOGOUT_LINK_LOCATOR}
-    Run Keyword If    ${logged_in}    web_locator.Click On Element     header_navigation.${LOGOUT_LINK_LOCATOR}
+
+
+# Go To Home Page Without Logging In
+#     ${logged_in}=    Run Keyword And Return Status    Element Should Be Visible    ${LOGOUT_LINK_LOCATOR}
+#     Run Keyword If    ${logged_in}    web_locator.Click On Element     header_navigation.${LOGOUT_LINK_LOCATOR}
     
 Verify Hasing New Products Slider
     Element Should Be Visible    ${SLIDER_LOCATOR}

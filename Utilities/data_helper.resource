@@ -1,6 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
-Resource    ..//Config/env.resource
+Resource    ..//configs/env.resource
 Resource    ..//TestData/home_page_data.resource
 Resource    ../Utilities/utills.resource
 Resource    ../Resources/header_navigation.resource

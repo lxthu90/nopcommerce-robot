@@ -4,12 +4,23 @@ Library    XML
 Library    DatabaseLibrary
 
 
-Resource    ..//Resources/home_page.resource
-Resource    ..//Config/env.resource
+Resource    ..//resources/home_page.resource
+Resource    ..//configs/env.resource
+Resource    ..//database_connection/database_helper.resource
 
 *** Variables ***
 
 *** Keywords ***
+Initialize Environment
+    Open Browser    about:blank    ${BROWSER}
+    Maximize Browser Window
+    database_helper.Initialize DB Connection
+
+
+Clean Up Environment
+    Close All Browsers
+    database_helper.Close DB Connection
+
 Remove Character From List
     [Arguments]    ${list_texts}    ${character_tobe_removed}
     ${ouput_texts}    Create List
@@ -19,11 +30,3 @@ Remove Character From List
     END
     [Return]    ${ouput_texts}
 
-Prepare Unreviewed Product
-    Connect To Database  pyodbc     ${DBName}  ${DBUser}  ${DBPassword}  ${DBHost}  ${DBPort}
-    Execute Sql String    Update [nop].[dbo].[Product] Set [ApprovedTotalReviews]=0
-    Execute Sql String    Delete From [nop].[dbo].[ProductReview]  Where Title <> 'Some sample review'
-    
-Prepare Reviewed Product
-    Connect To Database  pyodbc     ${DBName}  ${DBUser}  ${DBPassword}  ${DBHost}  ${DBPort}
-    Execute Sql String    Update [nop].[dbo].[Product] Set [ApprovedTotalReviews]=5

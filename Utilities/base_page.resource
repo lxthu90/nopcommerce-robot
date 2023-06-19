@@ -1,6 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
-Resource    ..//Config/env.resource
+Resource    ..//configs/env.resource
 Resource    ..//TestData/home_page_data.resource
 Resource    ..//TestData/header_navigation_data.resource
 Resource    ../Utilities/utills.resource
@@ -41,7 +41,7 @@ Get Current Currency Symbol
 
 I Want To Verify That Price Is Exchanged Properly To
     [Arguments]    ${currency_symbol}
-    home_page.Go To Home Page Without Logging In
+    home_page.Go To Home Page
     web_locator.Select Value Of Dropdown    ${CURRENCY_DROPDOWN_LOCATOR}    US Dollar
     base_page.Get All Actual Prices Values In Current Page
     web_locator.Select Value Of Dropdown    ${CURRENCY_DROPDOWN_LOCATOR}    ${currency_symbol}

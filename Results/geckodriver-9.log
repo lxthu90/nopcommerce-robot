@@ -1,0 +1,4 @@
+1681977486610	geckodriver	INFO	Listening on 127.0.0.1:63141
+1681977489645	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "63142" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\thulex\\AppData\\Local\\Temp\\rust_mozprofileqcqpzT"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment

@@ -13,4 +13,6 @@ All Needed Modules:
     robotframework-seleniumlibrary 6.0.0
     selenium                       4.8.2
     pyodbc                         4.0.35
+    webdrivermanager               0.10.0
 
+Update web driver at: C:\Users\{user}\AppData\Local\Programs\Python\Python311\Scripts

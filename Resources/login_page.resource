@@ -4,7 +4,7 @@ Library    Collections
 Library    String
 Library    random
 
-Resource    ..//Config/env.resource
+Resource    ..//configs/env.resource
 Resource    ..//TestData/home_page_data.resource
 Resource    ../Utilities/utills.resource
 Resource    ../Resources/header_navigation.resource
@@ -27,7 +27,7 @@ Login Page Should Appear
     ${title}=    Get Title 
     Should Be Equal As Strings    ${title}    ${LOGIN_PAGE_TITLE_LOCATOR}
 
-Login To System Then Going To Home Page
+Login To System
     Wait Until Element Is Visible    ${LOGO_LINK_LOCATOR}
     ${email}=    Register New Random User
     ${check_if_user_loged_in}    Run Keyword And Return Status    Wait Until Element Is Visible    ${LOGOUT_LINK_LOCATOR}
